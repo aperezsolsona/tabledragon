@@ -1,5 +1,11 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+health:
+    path: /health
+    methods: [ "GET" ]
+    controller: TableDragon\Infrastructure\Controller\HealthController
+
+players_show:
+    path: /players/{player_id}
+    controller: TableDragon\Infrastructure\Controller\Player\PlayerController::show
+    methods: GET
+    requirements:
+        player_id: '.+'

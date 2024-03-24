@@ -1,0 +1,53 @@
+version: '3'
+services:
+  php-fpm:
+    container_name: "php-fpm"
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        - APP_ROOT=${APP_ROOT}
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - tabledragon
+    restart: unless-stopped
+
+  nginx:
+    container_name: "nginx"
+    build:
+      context: ./
+      dockerfile: docker/nginx/Dockerfile
+    volumes:
+      - ./:/app
+    networks:
+      - tabledragon
+    ports:
+      - "80:80" # Ports that are exposed, you can connect to port 8001 to port 80 of the container.networks:- symfony
+
+  postgresql:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    container_name: "postgresql"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tabledragon}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tabledragon}
+      POSTGRES_USER: ${POSTGRES_USER:-tabledragon}
+    ports:
+      - "5432:5432"
+    networks:
+      - tabledragon
+    env_file:
+      - .env
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+
+networks:
+  tabledragon:
+    external: true
+
+volumes:
+  database_data:
+  symfony_app_var:
+  symfony_app_vendor:
