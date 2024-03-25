@@ -9,7 +9,6 @@ use TableDragon\Domain\Category\CategoryRepositoryInterface;
 
 final class CategoryRepository extends DoctrineBaseRepository implements CategoryRepositoryInterface
 {
-
     public static function getEntity(): string
     {
         return Category::class;

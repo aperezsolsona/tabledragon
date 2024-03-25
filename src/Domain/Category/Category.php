@@ -10,9 +10,8 @@ final class Category
     private readonly string $name;
     private readonly string $description;
 
-    public function __construct(int $id, string $name, string $description = null)
+    public function __construct(string $name, string $description = null)
     {
-        $this->id = $id;
         $this->name = $name;
         $this->description = $description;
     }

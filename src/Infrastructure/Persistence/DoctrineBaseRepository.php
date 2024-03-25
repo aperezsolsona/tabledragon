@@ -4,7 +4,6 @@ namespace TableDragon\Infrastructure\Persistence;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Log\LoggerInterface;
 
@@ -43,9 +42,8 @@ abstract class DoctrineBaseRepository extends EntityRepository
     public function saveObject($object): void
     {
         try {
-            $this->checkDoctrineConnection();
-            $this->_em->persist($object);
-            $this->_em->flush();
+            $this->getEntityManager()->persist($object);
+            $this->getEntityManager()->flush();
         } catch (Exception $e) {
             $this->logger->error('Fatal Error in DDBB! Message: '.$e->getMessage().' - Object: '.json_encode($object)."\n",
                 [
@@ -66,10 +64,9 @@ abstract class DoctrineBaseRepository extends EntityRepository
     public function updateClear($object): void
     {
         try {
-            $this->checkDoctrineConnection();
-            $this->_em->merge($object);
-            $this->_em->flush();
-            $this->_em->clear();
+            $this->getEntityManager()->merge($object); //TODO refactor this funcion, merge not supported in doctrine3
+            $this->getEntityManager()->flush();
+            $this->getEntityManager()->clear();
         } catch (Exception $e) {
             $this->logger->error('Fatal Error in DDBB! Message: '.$e->getMessage().' - Object: '.json_encode($object)."\n",
                 [
@@ -85,39 +82,14 @@ abstract class DoctrineBaseRepository extends EntityRepository
      * @throws Exception
      *
      * @uses EntityManagerInterface::flush();
-     * @uses EntityManagerInterface::persist();
-     */
-    public function saveClear($object): void
-    {
-        try {
-            $this->checkDoctrineConnection();
-            $this->_em->persist($object);
-            $this->_em->flush();
-            $this->_em->clear();
-        } catch (Exception $e) {
-            $this->logger->error('Fatal Error in DDBB! Message: '.$e->getMessage().' - Object: '.json_encode($object)."\n",
-                [
-                    'trace' => $e->getTraceAsString(),
-                    'object' => print_r($object, true),
-                ]
-            );
-            throw new Exception('There is a database problem trying to save the object');
-        }
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @uses EntityManagerInterface::flush();
      * @uses EntityManagerInterface::remove();
      */
     public function remove($object): void
     {
         try {
-            $this->checkDoctrineConnection();
-            $this->_em->remove($object);
-            $this->_em->flush();
-            $this->_em->clear();
+            $this->getEntityManager()->remove($object);
+            $this->getEntityManager()->flush();
+            $this->getEntityManager()->clear();
         } catch (Exception $e) {
             $this->logger->error('Fatal Error in DDBB! Message: '.$e->getMessage().' - Object: '.json_encode($object)."\n",
                 [
@@ -126,19 +98,6 @@ abstract class DoctrineBaseRepository extends EntityRepository
                 ]
             );
             throw new Exception('There is a database problem trying to remove the object');
-        }
-    }
-
-    /**
-     * @throws ORMException
-     */
-    private function checkDoctrineConnection(): void
-    {
-        if (!$this->_em->isOpen()) {
-            $this->_em = $this->_em->create(
-                $this->_em->getConnection(),
-                $this->_em->getConfiguration()
-            );
         }
     }
 }

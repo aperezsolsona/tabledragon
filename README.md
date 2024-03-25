@@ -36,6 +36,11 @@ docker compose build
 docker-compose up
 ```
 
+In order to prepopulate the database, execute the following:
+```sh
+docker exec -it php-fpm sh
+php bin/console tabledragon:command:populate-categories
+```
 ### Tests
 
 To execute all tests, just run:

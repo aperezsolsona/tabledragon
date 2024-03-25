@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TableCreator\Application\Player;
+namespace TableDragon\Application\Player;
 
-use TableCreator\Domain\Player\Player;
-use TableCreator\Domain\Player\PlayerRepositoryInterface;
-use TableCreator\Infrastructure\Uuid;
+use TableDragon\Domain\Player\Player;
+use TableDragon\Domain\Player\PlayerRepositoryInterface;
+use TableDragon\Infrastructure\Shared\Uuid;
 
 final class PlayerCreator
 {
@@ -23,6 +23,7 @@ final class PlayerCreator
     ): Player
     {
         $newUuid = $this->uuid->makeUuid();
+        // @todo render category object before instance creation
         $player = new Player($newUuid, $name, $surname, $number, $category_id);
         $this->playerRepository->saveObject($player);
 
