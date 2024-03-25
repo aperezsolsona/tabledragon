@@ -9,3 +9,13 @@ players_show:
     methods: GET
     requirements:
         player_id: '.+'
+
+players_index:
+    path: /players/
+    controller: TableDragon\Infrastructure\Controller\Player\PlayerController::index
+    methods: GET
+
+categories_index:
+    path: /categories/
+    controller: TableDragon\Infrastructure\Controller\Category\CategoryController::index
+    methods: GET

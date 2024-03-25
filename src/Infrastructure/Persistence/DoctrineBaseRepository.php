@@ -22,7 +22,7 @@ abstract class DoctrineBaseRepository extends EntityRepository
     public function all(int $limit = 100)
     {
         $queryBuilder = $this->createQueryBuilder('im')
-            ->orderBy('im.createdAt', 'DESC')
+            //->orderBy('im.createdAt', 'DESC')
             ->setMaxResults($limit);
 
         return $queryBuilder->getQuery()->execute();

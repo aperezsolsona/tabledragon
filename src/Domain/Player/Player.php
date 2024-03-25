@@ -8,11 +8,11 @@ use TableDragon\Domain\Category\Category;
 
 final class Player
 {
-    private string $id;
-    private readonly string $name;
-    private readonly string $surname;
-    private readonly string $number;
-    private readonly Category $category;
+    public readonly string $id;
+    public readonly string $name;
+    public readonly string $surname;
+    public readonly string $number;
+    public readonly Category $category;
 
     public function __construct(string $id, string $name, string $surname, string $number = null, Category $category = null)
     {
@@ -21,10 +21,5 @@ final class Player
         $this->surname = $surname;
         $this->number = $number;
         $this->category = $category;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
     }
 }

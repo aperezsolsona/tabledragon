@@ -12,11 +12,11 @@ final class PlayerTransformer
     public static function fromDomainToArray(Player $player): array
     {
         return [
-            'id' => $player->name,
+            'id' => $player->id,
             'name' => $player->name,
             'surname' => $player->surname,
             'number' => $player->number,
-            'passport' => $player->passport,
+            'category' => CategoryTransformer::fromDomainToArray($player->category)
         ];
     }
 }
