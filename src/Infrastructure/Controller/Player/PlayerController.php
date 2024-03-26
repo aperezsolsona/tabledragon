@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TableDragon\Infrastructure\Controller\Player;
 
+use TableDragon\Application\Player\PlayerCreator;
 use TableDragon\Application\Player\PlayerFinder;
 use TableDragon\Application\Player\PlayerLister;
 use TableDragon\Domain\Player\Player;
@@ -18,6 +19,7 @@ final class PlayerController extends AbstractController
     public function __construct(
         private readonly PlayerFinder $playerFinder,
         private readonly PlayerLister $playerLister,
+        private readonly PlayerCreator $playerCreator,
     ) {}
 
     public function show(Request $request, string $player_id): JsonResponse
@@ -38,5 +40,18 @@ final class PlayerController extends AbstractController
     {
         // todo implement pagination, limit...
         return [];
+    }
+
+    public function create(Request $request): JsonResponse
+    {
+        $postParameters = $request->getPayload();
+        $player = $this->playerCreator->__invoke(
+            $postParameters->get('name'),
+            $postParameters->get('surname'),
+            $postParameters->get('number'),
+            $postParameters->get('category_id'),
+        );
+
+        return new JsonResponse(['message' => 'Player '.$player->id.' was created successfully']);
     }
 }

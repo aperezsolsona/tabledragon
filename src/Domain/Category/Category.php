@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TableDragon\Domain\Category;
 
-final class Category
+class Category
 {
     public readonly int $id;
     public readonly string $name;

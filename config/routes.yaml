@@ -15,6 +15,11 @@ players_index:
     controller: TableDragon\Infrastructure\Controller\Player\PlayerController::index
     methods: GET
 
+players_create:
+    path: /players/
+    controller: TableDragon\Infrastructure\Controller\Player\PlayerController::create
+    methods: POST
+
 categories_index:
     path: /categories/
     controller: TableDragon\Infrastructure\Controller\Category\CategoryController::index
