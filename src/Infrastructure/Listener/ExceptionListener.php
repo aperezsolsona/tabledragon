@@ -7,8 +7,9 @@ namespace TableDragon\Infrastructure\Listener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
+use TableDragon\Domain\Category\Exception\CategoryNotFound;
 use TableDragon\Domain\DomainError;
-use TableDragon\Domain\Player\PlayerNotFound;
+use TableDragon\Domain\Player\Exception\PlayerNotFound;
 
 final class ExceptionListener
 {
@@ -16,6 +17,7 @@ final class ExceptionListener
 
     private const CUSTOM_HTTP_ERROR_CODES = [
         PlayerNotFound::class          => Response::HTTP_NOT_FOUND,
+        CategoryNotFound::class        => Response::HTTP_NOT_FOUND,
     ];
 
     public function onException(ExceptionEvent $event): void

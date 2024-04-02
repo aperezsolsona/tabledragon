@@ -25,7 +25,7 @@ services:
     networks:
       - tabledragon
     ports:
-      - "80:80" # Ports that are exposed, you can connect to port 8001 to port 80 of the container.networks:- symfony
+      - "80:80"
 
   postgresql:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
