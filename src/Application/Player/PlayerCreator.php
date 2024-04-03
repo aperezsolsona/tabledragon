@@ -17,16 +17,11 @@ final class PlayerCreator
         private readonly Uuid $uuid
     ) {}
 
-    public function __invoke(
-        string $name,
-        string $surname,
-        string $number,
-        int $category_id,
-    ): Player
+    public function __invoke(PlayerDTO $playerDTO): Player
     {
-        $category = $this->categoryFinder->__invoke($category_id);
+        $category = $this->categoryFinder->__invoke($playerDTO->categoryId);
         $newUuid = $this->uuid->makeUuid();
-        $player = new Player($newUuid, $name, $surname, $number, $category);
+        $player = new Player($newUuid, $playerDTO->name, $playerDTO->surname, $playerDTO->number, $category);
         $this->playerRepository->saveObject($player);
 
         return $player;

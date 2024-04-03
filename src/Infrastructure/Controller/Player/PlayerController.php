@@ -7,7 +7,6 @@ namespace TableDragon\Infrastructure\Controller\Player;
 use TableDragon\Application\Player\PlayerCreator;
 use TableDragon\Application\Player\PlayerFinder;
 use TableDragon\Application\Player\PlayerLister;
-use TableDragon\Domain\Player\Player;
 use TableDragon\Infrastructure\Transformer\PlayersTransformer;
 use TableDragon\Infrastructure\Transformer\PlayerTransformer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,15 +41,10 @@ final class PlayerController extends AbstractController
         return [];
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(PlayerPostRequest $request): JsonResponse
     {
-        $postParameters = $request->getPayload();
-        $player = $this->playerCreator->__invoke(
-            $postParameters->get('name'),
-            $postParameters->get('surname'),
-            $postParameters->get('number'),
-            $postParameters->get('category_id'),
-        );
+        $playerDTO = $request->getDTO();
+        $player = $this->playerCreator->__invoke($playerDTO);
 
         return new JsonResponse(['message' => 'Player '.$player->id.' was created successfully']);
     }
