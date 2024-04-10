@@ -5,3 +5,8 @@ tabledragon.exception_listener:
   class: TableDragon\Infrastructure\Listener\ExceptionListener
   tags:
     - { name: kernel.event_listener, event: kernel.exception, method: onException, priority: 256 }
+
+tabledragon.domain_event_listener:
+  class: TableDragon\Infrastructure\Listener\DomainEventListener
+  tags:
+    - { name: kernel.event_subscriber }
