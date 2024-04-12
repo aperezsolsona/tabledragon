@@ -1,0 +1,216 @@
+openapi: 3.0.0
+info:
+  title: "TableDragon"
+  description: "Table Tennis app. Boilerplate for a RESTful API in PHP+Symfony."
+  version: "1.0.0"
+
+tags:
+  - name: "Player Content"
+    description: "Endpoints related with the Players"
+  - name: "Category Content"
+    description: "Endpoints related with categories"
+
+paths:
+
+  /players:
+    get:
+      tags:
+        - "Player Content"
+      summary: "Get players"
+      description: "Filtered and paginated, returns a list of players"
+      operationId: "getPlayers"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayersPaginatedResponse'
+        500:
+          description: "unsuccessful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - "Player Content"
+      summary: "Create a new Player"
+      description: "Create a new Player"
+      operationId: "postPlayer"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PlayerCreateRequest"
+      responses:
+        201:
+          description: "successful operation"
+        500:
+          description: "unsuccessful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /players/{playerId}:
+    get:
+      tags:
+        - "Player Content"
+      summary: "Get Player by id"
+      description: "Returns Player by id"
+      operationId: "getPlayerById"
+      parameters:
+        - $ref: "#/components/parameters/playerId"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerResponse'
+        500:
+          description: "unsuccessful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /categories:
+    get:
+      tags:
+        - "Category Content"
+      summary: "Get all Categories"
+      description: "Returns all platform Categories"
+      operationId: "getCategories"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoriesResponse'
+        500:
+          description: "unsuccessful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  parameters:
+    playerId:
+      name: playerId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Player ID (UUID)
+
+  schemas:
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Database failed
+
+    PlayerCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Alex
+        surname:
+          type: string
+          example: Perez
+        number:
+          type: string
+          example: P345
+        category_id:
+          type: integer
+          example: 3
+      required:
+        - name
+        - surname
+        - number
+        - category_id
+
+    PlayerResponse:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/EmptyMetadata"
+        data:
+          $ref: "#/components/schemas/Player"
+
+    PlayersPaginatedResponse:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/PaginatedMetadata"
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Player"
+
+    CategoriesResponse:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/EmptyMetadata"
+        data:
+          $ref: "#/components/schemas/Category"
+
+    PaginatedMetadata:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        total_results:
+          type: integer
+          example: 27
+
+    EmptyMetadata:
+      type: object
+
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 69f393a5-07b4-4c05-afaa-916c7bf1d7f9
+        name:
+          type: string
+          example: Alex
+        surname:
+          type: string
+          example: Perez
+        number:
+          type: string
+          example: P345
+        category:
+          $ref: "#/components/schemas/Category"
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 5
+        name:
+          type: string
+          example: 3*
+        description:
+          type: string
+          example: Beginner/Intermediate Level
+
+externalDocs:
+  description: "TableDragon github page"
+  url: "https://github.com/aperezsolsona/tabledragon"
