@@ -19,6 +19,32 @@ paths:
       summary: "Get players"
       description: "Filtered and paginated, returns a list of players"
       operationId: "getPlayers"
+      parameters:
+        - in: query
+          name: keyword
+          schema:
+            type: string
+          description: Filtering keyword that applies to name, surname and number of player
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The numbers of page (based on limit) - default is 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return per page - default is 10
+        - in: query
+          name: order_by
+          schema:
+            type: string
+          description: Player field by which the results are ordered - default is id [id,name,surname,number,category_id]
+        - in: query
+          name: order_direction
+          schema:
+            type: string
+          description: The direction of ordering, values can be ASC/DESC asc/desc
       responses:
         200:
           description: "successful operation"
