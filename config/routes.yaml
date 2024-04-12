@@ -5,19 +5,19 @@ health:
 
 players_show:
     path: /players/{player_id}
-    controller: TableDragon\Infrastructure\Controller\Player\PlayerController::show
+    controller: TableDragon\Infrastructure\Controller\Player\PlayerShowController
     methods: GET
     requirements:
         player_id: '.+'
 
 players_index:
     path: /players/
-    controller: TableDragon\Infrastructure\Controller\Player\PlayerController::index
+    controller: TableDragon\Infrastructure\Controller\Player\PlayerIndexController
     methods: GET
 
 players_create:
     path: /players/
-    controller: TableDragon\Infrastructure\Controller\Player\PlayerController::create
+    controller: TableDragon\Infrastructure\Controller\Player\PlayerCreateController
     methods: POST
 
 categories_index:

@@ -6,7 +6,7 @@ use TableDragon\Application\Player\PlayerDTO;
 use TableDragon\Infrastructure\Controller\BaseRequest;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PlayerPostRequest extends BaseRequest
+class PlayerCreateRequest extends BaseRequest
 {
     #[Assert\NotBlank(message: 'Name field must not be empty')]
     #[Assert\Type('string')]

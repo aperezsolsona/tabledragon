@@ -4,8 +4,6 @@ namespace TableDragon\Application\Player;
 
 use TableDragon\Domain\Player\PlayerRepositoryInterface;
 use TableDragon\Domain\Player\PlayerSearchCriteria;
-use TableDragon\Infrastructure\Controller\PaginatedSuccessResponse;
-use TableDragon\Infrastructure\Transformer\PlayersTransformer;
 
 readonly class PlayerLister
 {
@@ -13,13 +11,13 @@ readonly class PlayerLister
         public PlayerRepositoryInterface $playerRepository
     ){}
 
-    public function __invoke(PlayerSearchCriteria $criteria): PaginatedSuccessResponse
+    public function __invoke(PlayerSearchCriteria $criteria): PlayerListerResponseDTO
     {
-        $data = $this->playerRepository->search($criteria);
+        $players = $this->playerRepository->search($criteria);
         $totalResults = $this->playerRepository->totalResults($criteria);
 
-        return new PaginatedSuccessResponse(
-            PlayersTransformer::fromDomainToArray($data),
+        return new PlayerListerResponseDTO(
+            $players,
             $criteria->getPage(),
             $criteria->getPerPage(),
             $totalResults
